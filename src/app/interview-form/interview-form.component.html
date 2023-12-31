@@ -1,0 +1,129 @@
+
+<div style="display: flex; gap: 15px; margin-bottom: 30px;">
+    <div class="flex: 1">
+        <mat-button-toggle-group [(ngModel)]="editMode" name="formMode" aria-label="Form Mode">
+            <mat-button-toggle [value]="false">View</mat-button-toggle>
+            <mat-button-toggle [value]="true">Edit</mat-button-toggle>
+        </mat-button-toggle-group>
+    </div>
+    <div class="flex: 1" *ngIf="editMode">
+        <label>
+            <input type="file" hidden #fileInput (change)="onFileSelected($event)" accept=".json" />
+            <button mat-button color="primary" (click)="fileInput.click()">
+                <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="upload"></mat-icon>
+                Upload Data File
+            </button>
+        </label>
+    </div>
+    <div class="flex: 1" *ngIf="editMode">
+        <button mat-button color="primary" 
+            (click)="onDownloadData()">
+            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="download"></mat-icon>
+            Download Data File
+        </button>
+    </div>
+</div>
+
+
+
+<h1 *ngIf="!editMode">{{interview.name}}</h1>
+<mat-form-field *ngIf="editMode" style="width: 50%;">
+    <mat-label>Interview Name</mat-label>
+    <textarea matInput
+    cdkTextareaAutosize
+    cdkAutosizeMinRows="1"
+    [(ngModel)]="interview.name" ></textarea>
+</mat-form-field>
+
+<p *ngIf="!editMode">Select the topics you want included in your customized forensic interview script.</p>
+
+<div *ngFor="let phase of interview.phases; index as i;">
+    <div *ngIf="!editMode" style="margin-top: 20px; text-align: center; font-size: 20px; font-weight: 500;">{{phase.name}}</div>
+    <mat-form-field *ngIf="editMode" style="margin-left: 25%; width: 50%;">
+        <mat-label>Phase Name</mat-label>
+        <textarea matInput
+        cdkTextareaAutosize
+        cdkAutosizeMinRows="1"
+        [(ngModel)]="phase.name" ></textarea>
+    </mat-form-field>
+
+    <div *ngFor="let section of phase.sections; index as j">
+        <div style="font-size: 16px;font-weight: 500;margin-bottom: 10px;">
+            <mat-checkbox [checked]="allComplete(section)" 
+                        *ngIf="!editMode"
+                        [indeterminate]="someComplete(section)"
+                        (change)="setAll(section, $event.checked)"
+                        [disableRipple]="true">
+                {{section.name}}
+            </mat-checkbox>
+            <div *ngIf="editMode" style="display: flex; gap: 10px;">
+                <mat-form-field style="flex: 1;">
+                    <mat-label>Topic</mat-label>
+                    <textarea matInput
+                    cdkTextareaAutosize
+                    cdkAutosizeMinRows="1"
+                    [(ngModel)]="section.name" ></textarea>
+                </mat-form-field>
+                <button mat-icon-button color="basic" 
+                    aria-label="Example icon button with a heart icon">
+                    <mat-icon>expand_more</mat-icon>
+                </button>
+                <button mat-icon-button color="basic" 
+                    aria-label="Example icon button with a heart icon">
+                    <mat-icon>expand_less</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" 
+                    (click)="onRemoveSection(phase, j)"
+                    aria-label="Example icon button with a heart icon">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </div>
+        
+        <div *ngFor="let topic of section.topics; index as k;" style="margin-bottom: 10px; margin-left: 30px;">
+            <div *ngIf="topic.isInstruction && !editMode" style="font-weight: 500;">{{topic.text}}</div>
+            <mat-checkbox *ngIf="!topic.isInstruction && !editMode" 
+                [(ngModel)]="topic.selected"
+                [disableRipple]="true">
+                {{topic.text}}
+            </mat-checkbox>
+            <div *ngIf="editMode" style="display: flex; gap: 10px;">
+                <mat-form-field style="flex: 1;">
+                    <mat-label>Topic</mat-label>
+                    <textarea matInput
+                    cdkTextareaAutosize
+                    cdkAutosizeMinRows="1"
+                    [(ngModel)]="topic.text" ></textarea>
+                </mat-form-field>
+                <button mat-icon-button color="basic" 
+                    aria-label="Example icon button with a heart icon">
+                    <mat-icon>expand_more</mat-icon>
+                </button>
+                <button mat-icon-button color="basic" 
+                    aria-label="Example icon button with a heart icon">
+                    <mat-icon>expand_less</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" 
+                    (click)="onRemoveTopic(section, k)"
+                    aria-label="Example icon button with a heart icon">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+            
+        </div>
+        <button *ngIf="editMode" 
+            (click)="onAddTopic(section)"
+            style="margin-bottom: 15px; margin-left: 30px;">Add Topic</button>
+    </div>
+    <button *ngIf="editMode" 
+        (click)="onAddSection(phase)"
+        style="margin-bottom: 15px;">Add Section</button>
+</div>
+<button *ngIf="editMode"
+    style="margin-bottom: 15px;">Add Phase</button>
+
+<div class="row justify-content-center" style="gap: 15px; padding-bottom: 20px;">
+    <button type="button" class="col-3 btn btn-primary"><i class="bi bi-printer"></i> Print</button>
+    <button type="button" class="col-3 btn btn-primary"><i class="bi bi-download"></i> Microsoft Word</button>
+    <button type="button" class="col-3 btn btn-primary"><i class="bi bi-download"></i> Download Pdf</button>
+</div>
