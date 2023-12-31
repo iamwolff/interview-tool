@@ -51,6 +51,22 @@ export class InterviewFormComponent implements OnInit {
     phase.sections.splice(index, 1);
   }
 
+  onMoveUp(items: any[], index: number) {
+    if (index <= 0) return;
+
+    let temp = items[index - 1];
+    items[index - 1] = items[index];
+    items[index] = temp;
+  }
+
+  onMoveDown(items: any[], index: number) {
+    if (index >= items.length - 1) return;
+
+    let temp = items[index - 1];
+    items[index - 1] = items[index];
+    items[index] = temp;
+  }
+
   onDownloadData(): void {
     let content = JSON.stringify(this.interview);
     var element = document.createElement('a');

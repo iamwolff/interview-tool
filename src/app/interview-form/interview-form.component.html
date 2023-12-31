@@ -65,10 +65,12 @@
                     [(ngModel)]="section.name" ></textarea>
                 </mat-form-field>
                 <button mat-icon-button color="basic" 
+                    (click)="onMoveDown(phase.sections, j)"
                     aria-label="Example icon button with a heart icon">
                     <mat-icon>expand_more</mat-icon>
                 </button>
                 <button mat-icon-button color="basic" 
+                    (click)="onMoveUp(phase.sections, j)"
                     aria-label="Example icon button with a heart icon">
                     <mat-icon>expand_less</mat-icon>
                 </button>
@@ -95,11 +97,18 @@
                     cdkAutosizeMinRows="1"
                     [(ngModel)]="topic.text" ></textarea>
                 </mat-form-field>
+                <mat-checkbox
+                    [(ngModel)]="topic.isInstruction"
+                    [disableRipple]="true">
+                    Instruction
+                </mat-checkbox>
                 <button mat-icon-button color="basic" 
+                    (click)="onMoveDown(section.topics, k)"
                     aria-label="Example icon button with a heart icon">
                     <mat-icon>expand_more</mat-icon>
                 </button>
                 <button mat-icon-button color="basic" 
+                    (click)="onMoveUp(section.topics, k)"
                     aria-label="Example icon button with a heart icon">
                     <mat-icon>expand_less</mat-icon>
                 </button>
