@@ -58,7 +58,7 @@
             </mat-checkbox>
             <div *ngIf="editMode" style="display: flex; gap: 10px;">
                 <mat-form-field style="flex: 1;">
-                    <mat-label>Topic</mat-label>
+                    <mat-label>Section</mat-label>
                     <textarea matInput
                     cdkTextareaAutosize
                     cdkAutosizeMinRows="1"
@@ -129,6 +129,7 @@
         style="margin-bottom: 15px;">Add Section</button>
 </div>
 <button *ngIf="editMode"
+    (click)="onAddPhase(interview)"
     style="margin-bottom: 15px;">Add Phase</button>
 
 <div class="row justify-content-center" style="gap: 15px; padding-bottom: 20px;">

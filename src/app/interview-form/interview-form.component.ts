@@ -51,6 +51,10 @@ export class InterviewFormComponent implements OnInit {
     phase.sections.splice(index, 1);
   }
 
+  onAddPhase(interview: Interview) {
+    interview.phases.push({ name: '', sections: [] } as Phase);
+  }
+
   onMoveUp(items: any[], index: number) {
     if (index <= 0) return;
 
